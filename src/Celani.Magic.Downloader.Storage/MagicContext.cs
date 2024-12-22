@@ -32,6 +32,11 @@ public class MagicContext(DbContextOptions<MagicContext> options) : DbContext(op
     /// <summary>
     /// Card counts.
     /// </summary>
+    public DbSet<CardCount> CardCounts { get; set; } = default!;
+
+    /// <summary>
+    /// Card counts grouped by commander.
+    /// </summary>
     public DbSet<CommanderCardCount> CommanderCardCounts { get; set; } = default!;
 
     /// <summary>
@@ -86,13 +91,23 @@ public class MagicContext(DbContextOptions<MagicContext> options) : DbContext(op
     public async Task UpdateCardCountsAsync()
     {
         await Database.ExecuteSqlAsync($"""
+            INSERT INTO CardCounts (CardId, Count)
+            SELECT "o"."CardsId" AS "CardId", COUNT(*) AS "Count"
+            FROM "OracleCardStoredDeck" AS "o"
+            GROUP BY "o"."CardsId"
+            ON CONFLICT (CardId) DO
+            UPDATE SET Count = Count;
+
             INSERT INTO CommanderCardCounts (CommanderId, CardId, Count)
             SELECT "d"."MagicCommanderId" AS "CommanderId", "o"."CardsId" AS "CardId", COUNT(*) AS "Count"
             FROM "OracleCardStoredDeck" AS "o" 
             INNER JOIN "Decks" AS "d" ON "o"."StoredDecksId" = "d"."Id"
             GROUP BY "d"."MagicCommanderId", "o"."CardsId"
             ON CONFLICT (CommanderId, CardId) DO
-            UPDATE SET Count = Count
+            UPDATE SET Count = Count;
+
+            DELETE FROM CardCounts WHERE Count = 0;
+            DELETE FROM CommanderCardCounts WHERE Count = 0;
         """);
     }
 }

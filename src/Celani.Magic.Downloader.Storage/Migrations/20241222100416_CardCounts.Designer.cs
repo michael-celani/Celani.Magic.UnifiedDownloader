@@ -3,6 +3,7 @@ using System;
 using Celani.Magic.Downloader.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Celani.Magic.Downloader.Storage.Migrations
 {
     [DbContext(typeof(MagicContext))]
-    partial class MagicContextModelSnapshot : ModelSnapshot
+    [Migration("20241222100416_CardCounts")]
+    partial class CardCounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");

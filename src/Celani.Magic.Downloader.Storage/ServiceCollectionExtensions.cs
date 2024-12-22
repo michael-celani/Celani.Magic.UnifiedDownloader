@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContextFactory<MagicContext>((serviceProvider, options) =>
         {
             var dataOptions = serviceProvider.GetRequiredService<IOptions<StorageOptions>>().Value;
-            options.UseSqlite($"Data Source={dataOptions.DbPath}");
+            options.UseSqlite($"Data Source={dataOptions.DbPath};foreign keys=true");
         });
 
         return services;
