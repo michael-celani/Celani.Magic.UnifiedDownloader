@@ -30,8 +30,29 @@ public class DownloaderController(IEnumerable<IMagicDownloader> downloaders) : C
             return NotFound(err);
         }
 
+        DownloadedMagicList deck;
+
         // Download the deck:
-        var deck = await downloader.DownloadDeckAsync(id);
+        try
+        {
+            deck = await downloader.DownloadDeckAsync(id);
+        }
+        catch (Refit.ApiException ex)
+        {
+            var err = new DownloadResult
+            {
+                ResultCode = ex.StatusCode == System.Net.HttpStatusCode.NotFound ? 
+                    DownloadResultCode.ErrorNotFound : 
+                    DownloadResultCode.ErrorUnknown,
+                    
+                Error = new DownloadResultFailure()
+                {
+                    Messages = [ex.Message],
+                }
+            };
+
+            return BadRequest(err);
+        }
 
         // Transform the downloaded deck to the API:
         var apiDeck = new MagicDeck

@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Celani.Magic.Downloader.Storage;
 
 namespace Celani.Magic.Scryfall;
 

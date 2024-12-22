@@ -1,0 +1,6 @@
+@Celani.Magic.UnifiedDownloader_HostAddress = http://localhost:7150
+
+GET {{Celani.Magic.UnifiedDownloader_HostAddress}}/moxfield/H_5x2nFQ9UWmv_GlzXR54g
+Accept: application/json
+
+###

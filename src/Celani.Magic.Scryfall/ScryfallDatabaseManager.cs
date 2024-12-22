@@ -1,6 +1,7 @@
 ﻿using Celani.Magic.Downloader.Storage;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Celani.Magic.Scryfall;
 
@@ -15,7 +16,8 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
     private static readonly JsonSerializerOptions BulkDataDownloadOptions = new()
     {
         DefaultBufferSize = 128,
-        AllowTrailingCommas = true
+        AllowTrailingCommas = true,
+        Converters = { new JsonStringEnumConverter() }
     };
 
     private record CardDelta
@@ -41,7 +43,7 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
                     ColorIdentity = ColorIdentityTools.FromColors(card.ColorIdentity ?? []),
                     CardTypes = CardTypeTools.FromTypeLine(card.CompositeTypeLine),
                     RepresentativeScryfallId = card.Id,
-                    Layout = card.Layout
+                    Layout = (Downloader.Storage.CardLayout) card.Layout
                 };
 
                 OracleCards[card.CompositeOracleId!] = oracleCard;

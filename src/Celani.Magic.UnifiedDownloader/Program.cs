@@ -2,6 +2,7 @@ using Celani.Magic.Downloader.Archidekt;
 using Celani.Magic.Downloader.Moxfield;
 using Celani.Magic.Downloader.Storage;
 using Celani.Magic.Scryfall;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +12,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     var enumConverter = new JsonStringEnumConverter();
     options.JsonSerializerOptions.Converters.Add(enumConverter);
-}).AddMvcOptions(options =>
-{
-    options.ReturnHttpNotAcceptable = true;
 });
 
 builder.Services.AddMagicStorage(builder.Configuration);

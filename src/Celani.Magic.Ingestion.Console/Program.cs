@@ -1,11 +1,14 @@
-﻿using Celani.Magic.Downloader.Moxfield;
+﻿using Celani.Magic.Downloader.Core;
+using Celani.Magic.Downloader.Moxfield;
 using Celani.Magic.Downloader.Storage;
+using Celani.Magic.Ingestion.Console;
 using Celani.Magic.ML;
 using Celani.Magic.Scryfall;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
@@ -22,7 +25,6 @@ IHost host = builder.Build();
 var dbContextFactory = host.Services.GetRequiredService<IDbContextFactory<MagicContext>>();
 using var dbContext = dbContextFactory.CreateDbContext();
 
-/*
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var scryfallApi = host.Services.GetRequiredService<IScryfallApi>();
 var moxfieldApi = host.Services.GetRequiredService<IMoxfieldApi>();
@@ -71,7 +73,6 @@ await dbContext.SaveChangesAsync();
 dbContext.ChangeTracker.Clear();
 
 await dbContext.UpdateCardCountsAsync();
-*/
 
 var mlOptions = host.Services.GetRequiredService<IOptions<MLOptions>>().Value;
 
