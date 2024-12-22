@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f89c7d98-07f2-4884-a28b-3bd70194f83f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Celani.Magic.Downloader.Core\Celani.Magic.Downloader.Core.csproj" />
+    <ProjectReference Include="..\Celani.Magic.Downloader.Archidekt\Celani.Magic.Downloader.Archidekt.csproj" />
+    <ProjectReference Include="..\Celani.Magic.Downloader.Moxfield\Celani.Magic.Downloader.Moxfield.csproj" />
+    <ProjectReference Include="..\Celani.Magic.Downloader.Storage\Celani.Magic.Downloader.Storage.csproj" />
+    <ProjectReference Include="..\Celani.Magic.Scryfall\Celani.Magic.Scryfall.csproj" />
+    <ProjectReference Include="..\Celani.Magic.UnifiedDownloader.Api\Celani.Magic.UnifiedDownloader.Api.csproj" />
+  </ItemGroup>
+
+</Project>

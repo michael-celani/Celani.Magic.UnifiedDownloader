@@ -1,0 +1,131 @@
+﻿@page "/recommend/{source}/{deckId}"
+@using Celani.Magic.Downloader.Storage
+@rendermode InteractiveServer
+
+<PageTitle>Deck Recommendation</PageTitle>
+
+<div class="article-header"><h1>Deck Recommendations</h1></div>
+
+@if (notFound)
+{
+    <div class="recommender">
+        <h2>Not Found</h2>
+    </div>
+}
+else if (cards == null)
+{
+    <div class="recommender">
+        <h2>Loading...</h2>
+    </div>
+}
+else
+{
+    <div class="recommender">
+        <div class="deck-stats">
+            <div class="commander">
+                
+                @if (myDeck!.MagicCommander.Partner != null)
+                {
+                    <div class="comm-img"><img src="https://api.scryfall.com/cards/@myDeck!.MagicCommander.Commander.RepresentativeScryfallId?format=image&version=png" width="300"></div>
+                    <div class="commander-name">@myDeck.MagicCommander.Commander.Name // @myDeck.MagicCommander.Partner.Name</div>
+                }
+                else
+                {
+                    <div class="comm-img"><img src="https://api.scryfall.com/cards/@myDeck!.MagicCommander.Commander.RepresentativeScryfallId?format=image&version=png" width="300"></div>
+                    <div class="commander-name">@myDeck.MagicCommander.Commander.Name</div>
+                }
+                
+                <div class="deck-link"><a href="https://www.moxfield.com/decks/@DeckId">List</a></div>
+            </div>
+            <div class="deck-list-container">
+                <div class="deck-list">
+                    <li>
+                        @foreach (var cardGroup in myDeck.Cards!.GroupBy(x => CardTypeTools.GetHighestPriorityCardType(x.CardTypes)).OrderBy(x => x.Key switch
+                        {
+                            CardType.Creature => 1,
+                            CardType.Planeswalker => 2,
+                            CardType.Battle => 3,
+                            CardType.Sorcery => 4,
+                            CardType.Instant => 5,
+                            CardType.Artifact => 6,
+                            CardType.Enchantment => 7,
+                            CardType.Land => 8,
+                            _ => 9
+                        }))
+                        {
+                            <div class="deck-list-section" id="@Enum.GetName(cardGroup.Key)!.ToLower()">
+                                <div class="deck-list-header"><h3>@(Enum.GetName(cardGroup.Key))</h3></div>
+                                @foreach (var card in cardGroup.OrderBy(x => x.Name))
+                                {
+                                    <ul><a href="https://scryfall.com/card/@card.RepresentativeScryfallId">@card.Name</a></ul>
+                                }
+                            </div>
+                        }
+                    </li>
+                </div>
+            </div>
+        </div>
+
+        <div class="includes">
+
+            <div class="include-container">
+                <h1>Top Recommendations</h1>
+                <div class="include-type">
+                    @foreach (var card in topCards!)
+                    {
+                        <div class="include">
+                            <div><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId"><img class="include-img" src="https://api.scryfall.com/cards/@card.Card.RepresentativeScryfallId?format=image&version=png" width="200" height="300"></a></div>
+                            <div class="include-txt"><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId">@card.Card.Name</a></div>
+                            <div class="include-stats">(@card.Inclusions of @commanderCount)</div>
+                            <div class="score-txt">Score: @card.Score</div>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <div class="include-container">
+                <h1>Hot Takes</h1>
+                <div class="include-type">
+                    @foreach (var card in hotTakes!)
+                    {
+                        <div class="include">
+                            <div><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId"><img class="include-img" src="https://api.scryfall.com/cards/@card.Card.RepresentativeScryfallId?format=image&version=png" width="200" height="300"></a></div>
+                            <div class="include-txt"><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId">@card.Card.Name</a></div>
+                            <div class="include-stats">(@card.Inclusions of @commanderCount)</div>
+                            <div class="score-txt">Score: @card.Score</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @foreach (var cardType in cards.Keys.Where(cardType => cardType != Downloader.Storage.CardType.None && cards[cardType].Count > 0).OrderBy(x => x switch
+            {
+                CardType.Creature => 1,
+                CardType.Sorcery => 4,
+                CardType.Instant => 5,
+                CardType.Artifact => 6,
+                CardType.Enchantment => 7,
+                CardType.Planeswalker => 8,
+                CardType.Battle => 9,
+                CardType.Land => 10,
+                _ => 11
+            }))
+            {
+                <div class="include-container">
+                    <h1>@Enum.GetName(cardType)</h1>
+                    <div class="include-type">
+                        @foreach (var card in cards[cardType])
+                        {
+                            <div class="include">
+                                <div><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId"><img class="include-img" src="https://api.scryfall.com/cards/@card.Card.RepresentativeScryfallId?format=image&version=png" width="200" height="300"></a></div>
+                                <div class="include-txt"><a href="https://scryfall.com/card/@card.Card.RepresentativeScryfallId">@card.Card.Name</a></div>
+                                <div class="include-stats">(@card.Inclusions of @commanderCount)</div>
+                                <div class="score-txt">Score: @card.Score</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

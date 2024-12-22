@@ -1,0 +1,304 @@
+﻿body {
+    background-color: #121212;
+}
+
+table {
+    width: 100%;
+}
+
+tr {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h1 {
+    font-size: 3em;
+    padding: 0;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    color: aliceblue;
+}
+
+h2 {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    color: aliceblue;
+}
+
+h3 {
+    margin-top: 0.05em;
+    margin-bottom: 0.05em;
+    color: aliceblue;
+}
+
+li
+{
+    padding: 0;
+    list-style-type: none;
+}
+
+ul
+{
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+}
+
+.recommender
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-stats
+{
+    display: flex;
+    max-height: 45rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.commander
+{
+    flex: 0 2 30%;
+    text-align: center;
+    margin: 1rem;
+}
+
+.comm-img
+{
+    display: inline-block;
+}
+
+.commander img
+{
+    display: inline;
+    vertical-align: top;
+    clear: right;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.commander-name {
+    font-size: 1.5em;
+    padding: .1em;
+    margin: 0;
+    color: aliceblue;
+}
+
+.deck-link {
+    font-size: 1.25em;
+    padding: 0;
+}
+
+.deck-list-container
+{
+    flex: 1;
+    flex-direction: column;
+    overflow-x: auto;
+    column-fill: auto;
+    column-width: 10rem;
+    margin: 1rem;
+    max-width: 100%;
+}
+
+.deck-list-section
+{
+    margin-bottom: 1rem;
+}
+
+.deck-list-header
+{
+    border-bottom: 1px solid rgba(214, 214, 214, 0.5);
+    border-left: 5px solid grey;
+    padding-left: 10px;
+    margin-bottom: .25rem;
+    width: 100%;
+}
+
+.deck-list-section#creature .deck-list-header 
+{
+    border-left: 5px solid green;
+}
+
+
+.deck-list-section#sorcery .deck-list-header 
+{
+    border-left: 5px solid blue;
+}
+
+
+.deck-list-section#instant .deck-list-header 
+{
+    border-left: 5px solid aqua;
+}
+
+
+.deck-list-section#artifact .deck-list-header 
+{
+    border-left: 5px solid yellow;
+}
+
+
+.deck-list-section#battle .deck-list-header 
+{
+    border-left: 5px solid red;
+}
+
+
+.deck-list-section#enchantment .deck-list-header 
+{
+    border-left: 5px solid purple;
+}
+
+
+.deck-list-section#land .deck-list-header 
+{
+    border-left: 5px solid brown;
+}
+
+
+.deck-list-section#planeswalker .deck-list-header 
+{
+    border-left: 5px solid white;
+}
+
+.deck-list
+{
+    flex: 1;
+    flex-direction: row;
+    width: 100%;
+}
+
+.include-container {
+    width: 100%;
+}
+
+.include-type {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(214, 214, 214, 0.5);
+}
+
+.includes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    word-wrap: anywhere;
+}
+
+.include {
+    flex: 1 1 20%;
+    padding: 10px;
+    text-align: center;
+}
+
+.include-img {
+    flex: 1;
+    justify-content: center;
+    padding-bottom: .5em;
+    transition: all 0.15s ease-out;
+}
+
+
+.include-img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0.5rem 0.5rem 0rem rgba(0, 0, 0, 0.1));
+    transition: all 0.15s ease-in-out;
+}
+
+.include-txt {
+    flex: 1;
+}
+
+.include-stats
+{
+    font-weight: 300;
+    font-style: normal;
+    color: lightgray;
+}
+
+.score-txt
+{
+    font-weight: 300;
+    font-style: normal;
+    color: lightgray;
+}
+
+.mtg-color {
+    margin-right: 2px;
+    margin-left: 1px;
+    height: 0.8em;
+}
+
+a:link {
+    color:burlywood;
+}
+
+a:hover {
+    color: aliceblue;
+}
+
+a:visited {
+    color: orchid;
+}
+
+.outer-box {
+    width: 85%;
+    background-color: #19191C;
+    margin: 0 auto;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    box-shadow: 10px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Balsamiq Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: lightgray;
+}
+
+.inner-box {
+    padding: 5px 10px 0px 10px;
+    overflow: hidden;
+    color: lightgray;
+}
+
+.article-header {
+    border-bottom: 1px solid #D6D6D6;
+    padding-left: 5px;
+}
+
+.article-content {
+    margin: 0px 0px 5px 0px;
+    padding: 5px;
+}
+
+.center-align {
+    text-align: center;
+}
+
+a[href^="https://scryfall.com/card/"] {
+    text-decoration-style: dashed;
+}
+
+    a[href^="https://scryfall.com/card/"]:after {
+        opacity: 0;
+        display: inline-block;
+        position: fixed;
+        pointer-events: none;
+        width: 2.5in;
+        height: 3.5in;
+        top: var(--top);
+        left: var(--left);
+        content: "";
+        background: var(--link) no-repeat 0 0;
+        background-size: 100%;
+        transition: opacity 0.15s ease-out 0s;
+        margin-left: 10px;
+    }
+
+    a[href^="https://scryfall.com/card/"]:hover::after {
+        opacity: 1;
+        transition: opacity 0.15s ease-out 0.25s;
+    }
