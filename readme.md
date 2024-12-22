@@ -7,17 +7,11 @@ Key features include:
 - Easy setup and configuration through `appsettings.json`.
 - Database management with Entity Framework migrations.
 
-## Getting Started
-
-To get started with the Celani Magic Unified Downloader, follow these steps:
-
 ### Prerequisites
-
-Ensure that you have the following prerequisites:
 
 - .NET 9.0 SDK installed. You can download it from the [official .NET website](https://dotnet.microsoft.com/download/dotnet/9.0).
 
-### Installation
+### Getting Started
 
 1. Clone the repository:
     ```sh
@@ -33,9 +27,6 @@ Ensure that you have the following prerequisites:
     ```sh
     dotnet ef database update --project Celani.Magic.Downloader.Storage --startup-project Celani.Magic.Ingestion.Console
     ```
-
-5. Run Celani.Magic.UnifiedDownloader
-
 
 ### Usage
 
