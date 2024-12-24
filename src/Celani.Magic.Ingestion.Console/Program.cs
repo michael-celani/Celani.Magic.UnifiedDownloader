@@ -31,8 +31,10 @@ var moxfieldApi = host.Services.GetRequiredService<IMoxfieldApi>();
 var moxfieldDownloader = host.Services.GetRequiredService<IMagicDownloader>();
 
 // Update the database with the latest Scryfall data.
+
+/*
 var dbManager = host.Services.GetRequiredService<ScryfallDatabaseManager>();
-await dbManager.UpdateDatabaseAsync();
+await dbManager.UpdateDatabaseAsync(true);
 
 var searchParams = new MoxfieldSearchParameters
 {
@@ -73,10 +75,10 @@ await dbContext.SaveChangesAsync();
 dbContext.ChangeTracker.Clear();
 
 await dbContext.UpdateCardCountsAsync();
-
+*/
 var mlOptions = host.Services.GetRequiredService<IOptions<MLOptions>>().Value;
 
 using (var file = File.Create(mlOptions.RecommendationPath))
 {
-    RecommendationTrainer.WriteCardRecModel2(dbContext, file);
+    RecommendationTrainer.WriteCardRecModel(dbContext, file);
 }

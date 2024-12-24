@@ -9,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddMagicML(builder.Configuration);
 builder.Services.AddMagicStorage(builder.Configuration);
-builder.Services.AddPredictionEnginePool<RecommenderCard2, RecommenderCardPrediction2>().FromFile("/Users/mcelani/Desktop/cardRec.zip");
-
+builder.Services.AddPredictionEnginePool<RecommenderCard, RecommenderCardPrediction>().FromFile(
+    builder.Configuration.GetRequiredSection("Storage:Models:RecommendationPath").Value
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -34,22 +34,33 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
 
         public OracleCard GetOracleCard(ScryfallCardObject card)
         {
-            if (!OracleCards.TryGetValue(card.CompositeOracleId!, out var oracleCard))
+            if (!OracleCards.TryGetValue(card.CompositeOracleId, out var oracleCard))
             {
                 oracleCard = new OracleCard
                 {
                     Name = card.Name,
-                    OracleId = card.CompositeOracleId!,
+                    OracleId = card.CompositeOracleId,
                     ColorIdentity = ColorIdentityTools.FromColors(card.ColorIdentity ?? []),
                     CardTypes = CardTypeTools.FromTypeLine(card.CompositeTypeLine),
                     RepresentativeScryfallId = card.Id,
-                    Layout = (Downloader.Storage.CardLayout) card.Layout
+                    OracleText = card.CompositeOracleText ?? "",
+                    ManaCost = card.CompositeManaCost ?? "",
+                    TypeLine = card.CompositeTypeLine
                 };
-
-                OracleCards[card.CompositeOracleId!] = oracleCard;
-                OracleAdded.Add(oracleCard);
+            }
+            else
+            {
+                oracleCard.Name = card.Name;
+                oracleCard.ColorIdentity = ColorIdentityTools.FromColors(card.ColorIdentity ?? []);
+                oracleCard.CardTypes = CardTypeTools.FromTypeLine(card.CompositeTypeLine);
+                oracleCard.RepresentativeScryfallId = card.Id;
+                oracleCard.OracleText = card.CompositeOracleText ?? "";
+                oracleCard.ManaCost = card.CompositeManaCost ?? "";
+                oracleCard.TypeLine = card.CompositeTypeLine;
             }
 
+            OracleCards[card.CompositeOracleId] = oracleCard;
+            OracleAdded.Add(oracleCard);
             return oracleCard;
         }
 
@@ -104,8 +115,7 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
             ScryfallAdded.Add(scryfallCard);
         }
     }
-
-    public async Task UpdateDatabaseAsync()
+    public async Task UpdateDatabaseAsync(bool force)
     {
         using var scryfallContext = ScryfallContextFactory.CreateDbContext();
 
@@ -120,7 +130,7 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
         var lastUpdated = metadataRecord?.CreatedAt;
 
         // If the bulk update happened before the last updated time, no new information will be added.
-        if (lastUpdated is not null && allCards.UpdatedAt <= lastUpdated) return;
+        if (lastUpdated is not null && allCards.UpdatedAt <= lastUpdated && !force) return;
 
         var delta = new CardDelta
         {
@@ -153,7 +163,7 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
         {
             if (card is null) continue;
             if (card.CompositeOracleId is null) continue;
-            var oracleCard = delta.GetOracleCard(card);
+            var oracleCard = delta.OracleCards[card.CompositeOracleId];
             var scryfallCard = delta.GetScryfallCard(card, oracleCard);
         }
 
@@ -175,8 +185,8 @@ public class ScryfallDatabaseManager(IScryfallApi scryfallApi, IDbContextFactory
             }
         }
 
-        scryfallContext.AddRange(delta.OracleAdded);
-        scryfallContext.AddRange(delta.ScryfallAdded);
+        scryfallContext.UpdateRange(delta.OracleAdded);
+        scryfallContext.UpdateRange(delta.ScryfallAdded);
         scryfallContext.Update(delta.MetadataRecord);
         await scryfallContext.SaveChangesAsync();
     }

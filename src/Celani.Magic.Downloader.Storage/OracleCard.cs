@@ -34,9 +34,19 @@ public record OracleCard
     public required CardType CardTypes { get; set; }
 
     /// <summary>
-    /// The layout of the card.
+    /// The mana cost of the card.
     /// </summary>
-    public required CardLayout Layout { get; set; }
+    public required string ManaCost { get; set; }
+
+    /// <summary>
+    /// The raw type line of the card.
+    /// </summary>
+    public required string TypeLine { get; set; }
+
+    /// <summary>
+    /// The Oracle text of the card.
+    /// </summary>
+    public required string OracleText { get; set; }
 
     /// <summary>
     /// All the Scryfall cards that correspond to this Oracle card.

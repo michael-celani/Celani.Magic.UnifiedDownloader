@@ -28,7 +28,7 @@ public record CommandResult
 
 public partial class Recommend(
     IDbContextFactory<MagicContext> magicDb, 
-    PredictionEnginePool<RecommenderCard2, RecommenderCardPrediction2> predictionEngine)
+    PredictionEnginePool<RecommenderCard, RecommenderCardPrediction> predictionEngine)
 {
     private Dictionary<CardType, List<RecommendResult>>? cards;
 
@@ -94,11 +94,10 @@ public partial class Recommend(
 
         var watch = Stopwatch.StartNew();
 
-        var dataView = new MLContext().Data.LoadFromEnumerable(validCards.Select(card => new RecommenderCard2
+        var dataView = new MLContext().Data.LoadFromEnumerable(validCards.Select(card => new RecommenderCard
         {
-            DeckId = [myDeck.Id],
-            CardId = [card.Id],
-            CommanderId = [myDeck.MagicCommanderId]
+            DeckId = (uint) myDeck.Id,
+            CardId = (uint) card.Id
         }));
 
         var predictions = predictionEngine.GetModel().Transform(dataView).GetColumn<float>("Score");

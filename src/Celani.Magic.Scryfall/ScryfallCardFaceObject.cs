@@ -9,4 +9,10 @@ public class ScryfallCardFaceObject
 
     [JsonPropertyName("oracle_id")]
     public string? OracleId { get; set; }
+
+    [JsonPropertyName("mana_cost")]
+    public string? ManaCost { get; set; }
+
+    [JsonPropertyName("oracle_text")]
+    public string? OracleText { get; set; }
 }
