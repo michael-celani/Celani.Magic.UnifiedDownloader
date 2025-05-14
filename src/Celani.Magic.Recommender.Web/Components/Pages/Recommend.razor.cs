@@ -112,6 +112,8 @@ public partial class Recommend(
 
         foreach (var (card, score) in validCards.Zip(predictions))
         {
+            if (float.IsNaN(score)) continue;
+
             // Add the card to the priority queue.
             var cardType = CardTypeTools.GetHighestPriorityCardType(card.CardTypes);
             priorities[cardType].Enqueue(card, -score);
